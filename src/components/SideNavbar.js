@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './SideNavbar.css';
 import {faAngleDown, faInfo, faPlus, faSearch, faStar, faStickyNote, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -8,10 +8,21 @@ import { auth } from '../server/firebase';
 
 function Sidenavbar(props){
 
+    const [dropDown, setDropDown] = useState(false);
+
     const {handleLogout} = props;
 
     const handleCreateNote=(event)=>{
         console.log(event.target.className);
+    }
+
+    const handleDropDown=()=>{
+        setDropDown(!dropDown);
+    }
+
+    const handleLogoutClick=()=>{
+        setDropDown(false);
+        handleLogout();
     }
 
 
@@ -23,11 +34,20 @@ function Sidenavbar(props){
                     <div className="profile-icon">
                         {auth.currentUser.displayName[0].toUpperCase()}
                     </div>
-                    <div onClick={handleLogout} className="profile-title">
+                    <div className="profile-title">
                         {auth.currentUser.displayName}
-                        <FontAwesomeIcon className="icon" icon={faAngleDown}/>
+                        <FontAwesomeIcon className="icon" onClick={handleDropDown} icon={faAngleDown}/>
                     </div>
                 </div>
+
+                {dropDown && <><div className="sidenavbar-top-profile">
+                    <div className="dropdown" onClick={handleLogoutClick}>
+                        Logout
+                    </div>
+                    
+                    </div>
+                    <hr/></>
+                    }
 
                 <div className="sidenavbar-top-search">
                     <div className="search-block">
@@ -47,13 +67,6 @@ function Sidenavbar(props){
 
                 <div className="sidenavbar-top-menu">
                     <ul>
-                        <li >
-                            <NavLink to="/dumm1">
-                                <FontAwesomeIcon  className="icon" icon={faStar}/>
-                                Dummy
-                            </NavLink>
-                        </li>
-                        
                         <li>
                             <NavLink to="/all-notes">
                                 <FontAwesomeIcon  className="icon" icon={faStickyNote}/>

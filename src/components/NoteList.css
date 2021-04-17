@@ -1,7 +1,5 @@
 .note-list{
-    width: 340px;
-    max-width: 670px;
-    min-width: 196px;
+    width: 390px;
     background: #e6e4e4;
     border-right: 1px solid #e6e6e6;
     display: flex;

@@ -6,6 +6,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Redirect,
 } from 'react-router-dom';
 import { useState } from 'react';
 import Login from './Login/Login';
@@ -72,9 +73,9 @@ function App() {
     }
   
 
-    const handleLogin = ()=>{
+    const handleLogin = async ()=>{
       clearErrors();
-      fireBase
+      await fireBase
           .auth()
           .signInWithEmailAndPassword(email, password)
           .catch(err =>{
@@ -127,6 +128,11 @@ function App() {
       
       <Sidenavbar handleLogout={handleLogout}/>
       <Switch>
+        <Route exact path="/" render={()=>{
+          return (
+            <Redirect to="/all-notes"/>
+          )
+        }}/>
         <Route path="/all-notes">
           <Notelist title="All Notes"/>
           <Route path="/all-notes/:id">
@@ -140,7 +146,8 @@ function App() {
             <Notepad/>
           </Route>
         </Route>
-      </Switch>
+      </Switch> 
+      
 
     </div>
     </Router>
