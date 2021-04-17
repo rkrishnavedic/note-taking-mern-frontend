@@ -3,9 +3,17 @@ import './SideNavbar.css';
 import {faAngleDown, faInfo, faPlus, faSearch, faStar, faStickyNote, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { NavLink } from 'react-router-dom';
+import { auth } from '../server/firebase';
 
 
-function Sidenavbar(){
+function Sidenavbar(props){
+
+    const {handleLogout} = props;
+
+    const handleCreateNote=(event)=>{
+        console.log(event.target.className);
+    }
+
 
     return (
         <div className="sidenavbar">
@@ -13,10 +21,10 @@ function Sidenavbar(){
 
                 <div className="sidenavbar-top-profile">
                     <div className="profile-icon">
-                        A
+                        {auth.currentUser.displayName[0].toUpperCase()}
                     </div>
-                    <div className="profile-title">
-                        Rahul
+                    <div onClick={handleLogout} className="profile-title">
+                        {auth.currentUser.displayName}
                         <FontAwesomeIcon className="icon" icon={faAngleDown}/>
                     </div>
                 </div>
@@ -29,7 +37,7 @@ function Sidenavbar(){
                 </div>
 
                 <div className="sidenavbar-top-create">
-                    <div className="create-btn">
+                    <div className="create-btn" onClick={handleCreateNote}>
                         <FontAwesomeIcon className="icon" icon={faPlus}/>
                         <div className="create-title">
                             New Note
@@ -39,7 +47,7 @@ function Sidenavbar(){
 
                 <div className="sidenavbar-top-menu">
                     <ul>
-                        <li>
+                        <li >
                             <NavLink to="/dumm1">
                                 <FontAwesomeIcon  className="icon" icon={faStar}/>
                                 Dummy

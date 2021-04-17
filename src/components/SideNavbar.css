@@ -93,6 +93,7 @@
   .sidenavbar-top-menu ul{
         list-style: none;
         padding-left: 0;
+        width: 100%;
   }
 
   .sidenavbar-top-menu ul li a{
@@ -103,21 +104,21 @@
     text-decoration: none;
   }
   
-  .sidenavbar-top-menu ul li:hover{
+  .sidenavbar-top-menu ul li a:hover{
     cursor: pointer;
-    background: rgb(110, 135, 182);
-    color: rgb(66, 62, 62);
+    color: rgb(156, 191, 245);
   }
   
-  .sidenavbar-top-menu ul li:active{
+  .sidenavbar-top-menu ul .active{
     cursor: pointer;
-    background: rgb(73, 98, 145);
-    color: rgb(66, 62, 62);
+    background: rgb(124, 127, 129);
+    color: rgb(0, 0, 0);
+    border-radius: 20px;
   }
 
 .sidenavbar .sidenavbar-bottom{
       padding: 8px 15px;
-      border-top: 1px solid #555;
+      border-top: 1px solid rgb(109, 109, 109);
 
 }
 .sidenavbar-bottom .need-help{
