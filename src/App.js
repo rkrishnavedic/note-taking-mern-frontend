@@ -8,12 +8,18 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
-import { useState } from 'react';
+import { useReducer, useState } from 'react';
 import Login from './Login/Login';
 import fireBase,{ auth }  from './server/firebase';
 import {useAuthState} from 'react-firebase-hooks/auth';
+import { NotesContext } from './context/context';
+import NoteReducer from './reducer/reducer';
+
+const initialState = [];
 
 function App() {
+
+  const [notes, notesDispatch] = useReducer();
 
     const [yourName, setYourName] = useState(null);
     const [nameError, setNameError] = useState(false);
@@ -124,6 +130,7 @@ function App() {
   return (
 
     <Router>
+      <NotesContext.Provider value={{notesState: notes,notesDispatch}}>
     <div className="App">
       
       <Sidenavbar handleLogout={handleLogout}/>
@@ -150,6 +157,7 @@ function App() {
       
 
     </div>
+    </NotesContext.Provider>
     </Router>
   );
 }

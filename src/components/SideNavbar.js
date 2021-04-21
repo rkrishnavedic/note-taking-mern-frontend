@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './SideNavbar.css';
 import {faAngleDown, faInfo, faPlus, faSearch, faStar, faStickyNote, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { NavLink } from 'react-router-dom';
 import { auth } from '../server/firebase';
+import { NotesContext } from '../context/context';
 
 
 function Sidenavbar(props){
+
+    //const NotesContext = useContext(NotesContext)
 
     const [dropDown, setDropDown] = useState(false);
 
