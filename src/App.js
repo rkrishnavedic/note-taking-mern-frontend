@@ -19,7 +19,7 @@ const initialState = [];
 
 function App() {
 
-  const [notes, notesDispatch] = useReducer();
+    const [notes, notesDispatch] = useReducer(NoteReducer, initialState);
 
     const [yourName, setYourName] = useState(null);
     const [nameError, setNameError] = useState(false);

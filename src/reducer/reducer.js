@@ -1,18 +1,16 @@
 const NoteReducer = (state, action)=>{
     let draftNotes = [...state];
     switch(action.type){
-        case 'getAllNotesSuccess':
+        case 'GET_ALL_NOTES':
             return action.payload;
-        case 'createNoteSuccess':
+        case 'CREATE_NOTE':
             draftNotes.unshift(action.payload);
             return draftNotes;
-        case 'updateNoteSuccess':
+        case 'UPDATE_NOTE':
             let index = state.findIndex(item=>item.id === action.id);
             draftNotes[index] = {...draftNotes[index], ...action.payload};
             return draftNotes;
-        case 'archiveNoteSuccess':
-            return draftNotes.filter(item=> item.id!==action.id);
-        case 'deleteNoteSuccess':
+        case 'ARCHIVE_NOTE' || 'DELETE_NOTE':
             return draftNotes.filter(item=> item.id!==action.id);
         default:
             return state;

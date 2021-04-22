@@ -1,22 +1,37 @@
 import React, { useContext, useState } from 'react';
 import './SideNavbar.css';
-import {faAngleDown, faInfo, faPlus, faSearch, faStar, faStickyNote, faTrash} from '@fortawesome/free-solid-svg-icons';
+import {faAngleDown, faCodeBranch, faInfo, faPlus, faSearch, faStar, faStickyNote, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import { NavLink } from 'react-router-dom';
-import { auth } from '../server/firebase';
+import { NavLink, useHistory } from 'react-router-dom';
+import { auth, firestore, timestamp } from '../server/firebase';
 import { NotesContext } from '../context/context';
 
 
 function Sidenavbar(props){
 
-    //const NotesContext = useContext(NotesContext)
+    const {notesDispatch} = useContext(NotesContext);
 
     const [dropDown, setDropDown] = useState(false);
+    const history = useHistory();
 
     const {handleLogout} = props;
 
-    const handleCreateNote=(event)=>{
-        console.log(event.target.className);
+    const handleCreateNote=async ()=>{
+        console.log('create note button');
+        const newNote = {title:'Untitled', text:'', updatedAt: timestamp(), isArchive: false}
+        const docRef = await firestore.collection(`users/${auth.currentUser.uid}/notes`)
+                            .add(newNote);
+        console.log(docRef)
+        
+                    console.log(docRef);
+                    console.log(docRef.text);
+                    notesDispatch({type:'CREATE_NOTE', payload: {...docRef.data, id: docRef.id}})
+                    history.push({
+                                    pathname:  `/all-notes/${docRef.id}`,
+                                    note: docRef.data                              
+                                })
+                         
+                   
     }
 
     const handleDropDown=()=>{
