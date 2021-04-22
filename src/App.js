@@ -1,25 +1,12 @@
 import './App.css';
-import Notelist from './components/NoteList';
-import Notepad from './components/Notepad';
-import Sidenavbar from './components/SideNavbar';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from 'react-router-dom';
-import { useReducer, useState } from 'react';
+import { useState } from 'react';
 import Login from './Login/Login';
 import fireBase,{ auth }  from './server/firebase';
 import {useAuthState} from 'react-firebase-hooks/auth';
-import { NotesContext } from './context/context';
-import NoteReducer from './reducer/reducer';
+import Notelist from './component/notelist';
 
-const initialState = [];
 
 function App() {
-
-    const [notes, notesDispatch] = useReducer(NoteReducer, initialState);
 
     const [yourName, setYourName] = useState(null);
     const [nameError, setNameError] = useState(false);
@@ -128,38 +115,10 @@ function App() {
   }
 
   return (
-
-    <Router>
-      <NotesContext.Provider value={{notesState: notes,notesDispatch}}>
-    <div className="App">
       
-      <Sidenavbar handleLogout={handleLogout}/>
-      <Switch>
-        <Route exact path="/" render={()=>{
-          return (
-            <Redirect to="/all-notes"/>
-          )
-        }}/>
-        <Route path="/all-notes">
-          <Notelist title="All Notes"/>
-          <Route path="/all-notes/:id">
-            <Notepad/>
-          </Route>
-        </Route>
-
-        <Route path="/trash">
-          <Notelist title="Trash"/>
-          <Route path="/trash/:id">
-            <Notepad/>
-          </Route>
-        </Route>
-      </Switch> 
-      
-
-    </div>
-    </NotesContext.Provider>
-    </Router>
-  );
+    <Notelist collectionName="notes"/>
+    
+  )
 }
 
 export default App;
