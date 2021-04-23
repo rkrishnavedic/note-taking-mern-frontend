@@ -22,11 +22,7 @@ const Notelist = ({collectionName})=>{
 
     }, [collectionName])
 
-    return (
-        <div className="evernote-container">
-            Notes
-        </div>
-    )
+    return {notes}
 
 }
 

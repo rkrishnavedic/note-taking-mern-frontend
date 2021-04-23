@@ -22,11 +22,11 @@ const Sidebar = (props)=>{
     }
 
     const selectNote=()=>{
-        props.selectNote(note, index);
+        console.log('select Note')
     }
 
     const deleteNote=()=>{
-        console.log('select note');
+        console.log('delete note');
     }
 
 

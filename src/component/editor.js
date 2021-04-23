@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import { useState } from 'react/cjs/react.development';
 import debounce from '../utils/utils';
 
-const Editor = ()=>{
+const Editor = (props)=>{
     const [note, setNote]=useState({
-        id: '',
-        title: '',
-        text: '',
+        text: props.selectedNote.body,
+        title: props.selectedNote.title,
+        id: props.selectedNote.id
     })
 
     const updateBody = async (value)=>{
@@ -16,6 +16,8 @@ const Editor = ()=>{
         //here DB upload will happen
         console.log('DB updated!');
     }
+
+
 
     return (
         <div>

@@ -10,9 +10,10 @@ const SidebarItem=(props)=>{
     }
 
     const deleteNote=(note)=>{
-        if(window.confirm(`Are you sure you want to delet: ${note.title}`)){
-            props.deleteNote(note);
-        }
+        // if(window.confirm(`Are you sure you want to delet: ${note.title}`)){
+        //     props.deleteNote(note);
+        // }
+        props.deleteNote(note);
     }
 
     return (
