@@ -3,8 +3,7 @@ import { useState } from 'react';
 import Login from './Login/Login';
 import fireBase,{ auth }  from './server/firebase';
 import {useAuthState} from 'react-firebase-hooks/auth';
-import NoteApp from './component/noteapp';
-
+import Home from './component/home';
 
 function App() {
 
@@ -116,7 +115,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <NoteApp/>
+      <Home/>
     </div>
     
   )

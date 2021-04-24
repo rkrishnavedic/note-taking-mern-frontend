@@ -7,6 +7,44 @@ html, body {
   padding: 0;
   overflow: hidden;
 }
+
+.navbar{
+  display: flex;
+  position: fixed;
+  flex-direction: column;
+  width: 260px;
+  border: 1px solid black;
+  height: 100%;
+}
+
+.navitem{
+  padding: 0.3rem;
+  border: 1px dashed rgb(51, 48, 48);
+}
+
+.notetitle{
+  font-weight: 800;
+  font-size: large;
+}
+.notedesc{
+  font-size: small;
+}
+
+.editor{
+  margin-left: 270px;
+}
+
+.edit{
+  border: 1px solid rgb(51, 48, 48);
+  font-size: x-small;
+  color:rgb(116, 112, 112)
+}
+
+.qleditor{
+  height: 100%;
+  width: 50rem;
+}
+
 #evernote-container {
   height: 100%;
   box-sizing: border-box;
