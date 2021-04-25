@@ -8,6 +8,7 @@ const useFirestore = (collectionName)=>{
 useEffect(()=>{
 
     firestore.collection(`users/${auth.currentUser.uid}/notes`)
+    .orderBy('updatedAt','desc')
     .onSnapshot(docRef =>{
         const _notes = docRef.docs.map(_doc=>{
             const data = _doc.data();

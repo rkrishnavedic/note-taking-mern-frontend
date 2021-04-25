@@ -115,7 +115,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <Home/>
+      <Home handleLogout={handleLogout}/>
     </div>
     
   )

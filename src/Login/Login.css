@@ -74,13 +74,3 @@
   color: #EF3B3A;
   font-size: 17px;
 }
-body {
-  background: #76b852; /* fallback for old browsers */
-  background: -webkit-linear-gradient(right, #ffffff, #ffffff);
-  background: -moz-linear-gradient(right, #ffffff, #ffffff);
-  background: -o-linear-gradient(right, #ffffff, #ffffff);
-  background: linear-gradient(to left, #9ad2ec, #ffffff);
-  font-family: "Roboto", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;      
-}
