@@ -20,6 +20,7 @@ const Navbar=(props)=>{
    
 
     const handleNewNote=()=>{
+        setSelectedNoteIndex(null);setEdit_note(null);setEdit_title(null);
         firestore.collection(`users/${auth.currentUser.uid}/notes`)
                 .add({
                     'title': 'Untitled',
@@ -33,8 +34,6 @@ const Navbar=(props)=>{
     }
 
     const handleDelete=(noteId, index)=>{
-        if(index === selectedNoteIndex){
-        setSelectedNoteIndex(null);setEdit_note(null);setEdit_title(null);}
         
         firestore.collection(`users/${auth.currentUser.uid}/notes`)
                 .doc(noteId)
@@ -42,6 +41,8 @@ const Navbar=(props)=>{
                 .then(()=>{
                     console.log('delete success!')
                 })
+
+        setSelectedNoteIndex(null);setEdit_note(null);setEdit_title(null);
     }
 
     const updateBody = (value, id)=>{
@@ -77,7 +78,7 @@ const Navbar=(props)=>{
             <div className="logo">flash-note</div>
             <hr/>
             <div className="d-flex justify-content-between">
-                <div className="avatar-text">y</div>
+                <div className="avatar-text">{auth.currentUser.displayName[0]}</div>
                 <div className="user">{auth.currentUser.displayName}</div>
                 <div> <img onClick={handleDropDown} alt='options' className="dropdown" src={dropDownIcon}/> </div>
             </div>
@@ -88,7 +89,7 @@ const Navbar=(props)=>{
             </div>
             
             <hr/>
-                <div onClick={handleNewNote} className="bg-success rounded-pill m-2 text-white" style={{textAlign:'center'}}>
+                <div style={{cursor:'default', textAlign:'center'}} onClick={handleNewNote} className="bg-success rounded-pill m-2 text-white">
                     Add New Note
                 </div>
             
@@ -99,10 +100,10 @@ const Navbar=(props)=>{
                 const _datetime = new Date(_note.updatedAt?.seconds*1000);
                 return(
                     <>
-                    <div className={(selectedNoteIndex!==null && selectedNoteIndex === _index)? "navitem-selected":"navitem"} onClick={()=>{setSelectedNoteIndex(_index); setEdit_note(_note.body);setEdit_title(_note.title);}} key={_note.id}>
+                    <div style={{float:'right', cursor:'default'}} onClick={()=>handleDelete(_note.id, _index)} className="text-danger m-1 font-weight-bold"> X </div>
+                    <div style={{cursor:'default'}} className={(selectedNoteIndex!==null && selectedNoteIndex === _index)? "navitem-selected":"navitem"} onClick={()=>{setSelectedNoteIndex(_index); setEdit_note(_note.body);setEdit_title(_note.title);}} key={_note.id}>
                         <div className="d-flex justify-content-between notetitle">{_note.title} 
                             
-                            <div onClick={()=>handleDelete(_note.id, _index)} className="text-danger font-weight-bold"> X </div>
                         </div>
                         <div className="notedesc">{removeHTMLTags(_note.body).substring(0,25)+'...'}
                         <br/>
@@ -110,6 +111,7 @@ const Navbar=(props)=>{
                         </div>
                         
                     </div>
+                    
                     </>
                 )
             })
