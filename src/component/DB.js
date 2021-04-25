@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import { auth, firestore } from '../server/firebase';
 
-const useFirestore = (collectionName)=>{
+const useFirestore = (props)=>{
     const [notes, setNotes] = useState([]);
 
 
@@ -15,11 +15,11 @@ useEffect(()=>{
             data['id'] = _doc.id;
             return data;
         });
-        console.log(_notes);
+        //console.log(_notes);
         setNotes(_notes);
     })
 
-}, [collectionName])
+}, [])
 
 return {notes};
 

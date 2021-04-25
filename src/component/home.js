@@ -9,10 +9,15 @@ import ReactQuill from 'react-quill';
 
 const Navbar=(props)=>{
 
-    const [selectedNote, setSelectedNote] = useState();
-    const [dropDown, setDropDown] = useState(false);
+    const [edit_note, setEdit_note] = useState();
+    const [edit_title, setEdit_title] = useState();
 
-    const {notes} = useFirestore('notes');
+    const [selectedNoteIndex, setSelectedNoteIndex] = useState();
+    const [dropDown, setDropDown] = useState(false);
+    const [triggerDB, setTriggerDB] = useState(false);
+
+    const {notes} = useFirestore(triggerDB);
+   
 
     const handleNewNote=()=>{
         firestore.collection(`users/${auth.currentUser.uid}/notes`)
@@ -27,8 +32,9 @@ const Navbar=(props)=>{
         setDropDown(!dropDown);
     }
 
-    const handleDelete=(noteId)=>{
-            setSelectedNote(null);
+    const handleDelete=(noteId, index)=>{
+        if(index === selectedNoteIndex){
+        setSelectedNoteIndex(null);setEdit_note(null);setEdit_title(null);}
         
         firestore.collection(`users/${auth.currentUser.uid}/notes`)
                 .doc(noteId)
@@ -38,15 +44,30 @@ const Navbar=(props)=>{
                 })
     }
 
-    const updateBody = (value)=>{
+    const updateBody = (value, id)=>{
+        updatedb('body',value, id);
+        setTriggerDB(!triggerDB);
+    }
 
-        setSelectedNote({...selectedNote, body: value})
+    const updateTitle = (value, id)=>{
+        updatedb('title', value, id);
+        //console.log('here')
+    }
 
+    const updatedb=(field, value, id)=>{
+        //console.log('updating db');
+        if(field==='title'){
         firestore.collection(`users/${auth.currentUser.uid}/notes`)
-                    .doc(selectedNote.id)
-                    .set({body: selectedNote.body},{merge: true})
+                    .doc(id)
+                    .set({title: value},{merge: true})
                     
-
+        }
+        else{
+                firestore.collection(`users/${auth.currentUser.uid}/notes`)
+                .doc(id)
+                .set({body: value},{merge: true})
+                
+        }
     }
 
 
@@ -74,14 +95,14 @@ const Navbar=(props)=>{
             <div style={{textAlign:'center'}}>All your notes are here</div>
             <hr/>
             {notes? 
-            notes.map((_note)=>{
+            notes.map((_note, _index)=>{
                 const _datetime = new Date(_note.updatedAt?.seconds*1000);
                 return(
                     <>
-                    <div className={(selectedNote && selectedNote.id === _note.id)? "navitem-selected":"navitem"} onClick={()=>{setSelectedNote(_note)}} key={_note.id}>
+                    <div className={(selectedNoteIndex!==null && selectedNoteIndex === _index)? "navitem-selected":"navitem"} onClick={()=>{setSelectedNoteIndex(_index); setEdit_note(_note.body);setEdit_title(_note.title);}} key={_note.id}>
                         <div className="d-flex justify-content-between notetitle">{_note.title} 
-                            <div className="text-primary">edit</div>
-                            <div onClick={()=>handleDelete(_note.id)} className="text-danger font-weight-bold"> X </div>
+                            
+                            <div onClick={()=>handleDelete(_note.id, _index)} className="text-danger font-weight-bold"> X </div>
                         </div>
                         <div className="notedesc">{removeHTMLTags(_note.body).substring(0,25)+'...'}
                         <br/>
@@ -98,16 +119,27 @@ const Navbar=(props)=>{
             </div>
                 }
         </div>
-        {selectedNote && <div className="editor">
-                                {selectedNote &&
+        {notes.map((_note,_index)=>{
+                    
+                    return( <>
+                                <div className="editor">
+                                {selectedNoteIndex===_index &&
+
+                                <div className="m-2 p-2">
+                                <input style={{textAlign:'left'}} className="m-2 p-2" value={edit_title} onChange={(e)=>{setEdit_title(e.target.value);updateTitle(e.target.value, _note.id);}} />
+                                            
                                 <ReactQuill
-                                className="ql-editor"
-                                value={selectedNote.body}
-                                onChange={debounce(updateBody,1500)}
+                                key={_index}
+                                className="p-2"
+                                value={edit_note}
+                                onChange={(val)=>{setEdit_note(val);debounce(updateBody(val,_note.id),1500);}}
                                 />
-                                
+                                </div>
                                 }
-                            </div>}
+                            </div>
+                            </>)
+                        })
+}
         </>
     )
 
