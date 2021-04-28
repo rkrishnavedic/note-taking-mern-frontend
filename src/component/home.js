@@ -12,7 +12,7 @@ const Navbar=(props)=>{
     const [edit_note, setEdit_note] = useState();
     const [edit_title, setEdit_title] = useState();
 
-    const [selectedNoteIndex, setSelectedNoteIndex] = useState();
+    const [selectedNoteId, setselectedNoteId] = useState();
     const [dropDown, setDropDown] = useState(false);
     const [triggerDB, setTriggerDB] = useState(false);
 
@@ -20,13 +20,18 @@ const Navbar=(props)=>{
    
 
     const handleNewNote=()=>{
-        setSelectedNoteIndex(null);setEdit_note(null);setEdit_title(null);
         firestore.collection(`users/${auth.currentUser.uid}/notes`)
                 .add({
                     'title': 'Untitled',
                     'body': '',
                     'updatedAt': timestamp(),
-                })
+                }).then(
+                    (docRef)=>{
+                        setselectedNoteId(docRef.id)
+                        setEdit_note('')
+                        setEdit_title('Untitled')
+                    }
+                )
     }
 
     const handleDropDown=()=>{
@@ -39,10 +44,15 @@ const Navbar=(props)=>{
                 .doc(noteId)
                 .delete()
                 .then(()=>{
-                    console.log('delete success!')
+                    //console.log('delete success!')
+                    if(noteId === selectedNoteId){
+                        setselectedNoteId(null);setEdit_note(null);setEdit_title(null);
+                        }
+                }).catch(err=>{
+                    console.log(err);
                 })
-
-        setSelectedNoteIndex(null);setEdit_note(null);setEdit_title(null);
+            
+        
     }
 
     const updateBody = (value, id)=>{
@@ -101,7 +111,7 @@ const Navbar=(props)=>{
                 return(
                     <>
                     <div style={{float:'right', cursor:'default'}} onClick={()=>handleDelete(_note.id, _index)} className="text-danger m-1 font-weight-bold"> X </div>
-                    <div style={{cursor:'default'}} className={(selectedNoteIndex!==null && selectedNoteIndex === _index)? "navitem-selected":"navitem"} onClick={()=>{setSelectedNoteIndex(_index); setEdit_note(_note.body);setEdit_title(_note.title);}} key={_note.id}>
+                    <div style={{cursor:'default'}} className={(selectedNoteId!==null && selectedNoteId === _note.id)? "navitem-selected":"navitem"} onClick={()=>{setselectedNoteId(_note.id); setEdit_note(_note.body);setEdit_title(_note.title);}} key={_note.id}>
                         <div className="d-flex justify-content-between notetitle">{_note.title} 
                             
                         </div>
@@ -125,13 +135,29 @@ const Navbar=(props)=>{
                     
                     return( <>
                                 <div className="editor">
-                                {selectedNoteIndex===_index &&
+                                {selectedNoteId===_note.id &&
 
                                 <div className="m-2 p-2">
                                 <input style={{textAlign:'left'}} className="m-2 p-2" value={edit_title} onChange={(e)=>{setEdit_title(e.target.value);updateTitle(e.target.value, _note.id);}} />
                                             
                                 <ReactQuill
                                 key={_index}
+                                modules={
+                                    {
+                                        toolbar:[
+                                            [{ 'font': [] }],
+                                            [{ header: [1, 2, false] }],
+                                            ['bold', 'italic', 'underline','strike'],
+                                            [{ 'script': 'sub'}, { 'script': 'super' }],
+                                            ['link',{ 'align': [] }],
+                                            [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+                                            
+                                            
+
+                                            ['image', 'code-block'],
+                                        ]
+                                    }
+                                }
                                 className="p-2"
                                 value={edit_note}
                                 onChange={(val)=>{setEdit_note(val);debounce(updateBody(val,_note.id),1500);}}
