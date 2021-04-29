@@ -29,7 +29,7 @@ function Login(props) {
             <div className="login-page">
               <div className="form">
                 <div className="login-form">
-                <h2 className="head">Welcome to ForeverNote!</h2>
+                <h2 className="head">Welcome to flash-note!</h2>
                 <h3 className="head">Authentication</h3>
                 <div className="login-form">
                 {hasAccount && <input
@@ -59,20 +59,20 @@ function Login(props) {
                   onChange = {(e)=> {setPassword(e.target.value);clearErrors();}}
                   type="password" id="inputPassword" className="form-control" placeholder="Password"/>
                   {passwordError!==''? <p className="info">{passwordError}</p>:null}
-                </div>
-                <div className="login-form">
-                {hasAccount? (
-                          <>
-                          <button className="button" onClick={handleSignUp}>Sign Up</button> <button className="button" onClick={clearInputs}>Clear</button>
-                          <p className="message">Already Registered? <span className="underlineHover" style={{cursor:'pointer'}} onClick={toggleHasAccount}>Sign In</span></p>
-                          </>
-                      ):(
-                          <>
-                          <button className="button" onClick={handleLogin}>Sign In</button> <button className="button" onClick={clearInputs}>Clear</button>
-                          <p className="message">Not registered? <span className="underlineHover" style={{cursor:'pointer'}} onClick={toggleHasAccount}>Sign Up</span></p>
-                          </>
-                      )}
-                </div>
+                  </div>
+                  <div className="login-form">
+                  {hasAccount? (
+                            <>
+                            <button className="button" onClick={handleSignUp}>Sign Up</button> <button className="button" onClick={clearInputs}>Clear</button>
+                            <p className="message">Already Registered? <span className="underlineHover" style={{cursor:'pointer'}} onClick={toggleHasAccount}>Sign In</span></p>
+                            </>
+                        ):(
+                            <>
+                            <button className="button" onClick={handleLogin}>Sign In</button> <button className="button" onClick={clearInputs}>Clear</button>
+                            <p className="message">Not registered? <span className="underlineHover" style={{cursor:'pointer'}} onClick={toggleHasAccount}>Sign Up</span></p>
+                            </>
+                        )}
+                  </div>
                 </div>
             </div>
   
